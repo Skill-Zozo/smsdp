@@ -8,7 +8,9 @@ import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 
+import { CallNumber } from '@ionic-native/call-number';
 import { StatusBar } from '@ionic-native/status-bar';
+import { File } from '@ionic-native/file';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 @NgModule({
@@ -34,6 +36,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   providers: [
     StatusBar,
     SplashScreen,
+    CallNumber,
+    File,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

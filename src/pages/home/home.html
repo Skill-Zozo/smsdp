@@ -1,17 +1,26 @@
-<ion-header>
+<ion-header color="dark">
   <ion-navbar>
     <ion-title>Home</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p>
+<ion-content>
+  <ion-row>
+    <ion-col col-10 offset-1>
+      <button ion-button round block (click)="dialTwilioServer()" color="danger">Lalela dokotela</button>
+    </ion-col>
+  </ion-row>
+  <ion-note class="centered" *ngIf="showCounter">
+    {{ counter }}
+  </ion-note>
 </ion-content>
+
+<ion-footer color="dark">
+  <ion-row>
+    <ion-col col-10 offset-1>
+      <button ion-button round block (click)="takeMeds()" color="danger">
+        Press to take medication
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

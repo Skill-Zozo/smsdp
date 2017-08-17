@@ -1,3 +1,26 @@
 page-home {
+  ion-label {
+    text-align: center;
+  }
+
+  ion-title {
+    text-align: center;
+  }
+
+  ion-note {
+    font-size: -webkit-xxx-large!important;
+  }
+
+  .centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .centered.ng-enter {
+    -webkit-animation: swing 1s;
+    animation: swing 1s;
+  }
 
 }
