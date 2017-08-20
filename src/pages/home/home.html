@@ -1,5 +1,10 @@
-<ion-header color="dark">
-  <ion-navbar>
+<ion-header>
+  <ion-navbar color="dark">
+    <ion-buttons start>
+      <button ion-button icon-only (click)="launchVerificationDialog()">
+        <ion-icon name="settings"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>Home</ion-title>
   </ion-navbar>
 </ion-header>
@@ -15,12 +20,14 @@
   </ion-note>
 </ion-content>
 
-<ion-footer color="dark">
-  <ion-row>
-    <ion-col col-10 offset-1>
-      <button ion-button round block (click)="takeMeds()" color="danger">
-        Press to take medication
-      </button>
-    </ion-col>
-  </ion-row>
+<ion-footer>
+  <ion-toolbar color="dark">
+    <ion-row>
+      <ion-col col-10 offset-1>
+        <button ion-button round block (click)="takeMeds()" color="danger">
+          Press to take medication
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
 </ion-footer>

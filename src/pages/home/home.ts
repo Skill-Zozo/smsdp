@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController } from 'ionic-angular';
 import { CallNumber } from '@ionic-native/call-number';
 import { Observable } from 'rxjs/Rx';
 import { File } from '@ionic-native/file';
+import { ResearchPage } from './research';
 
 @Component({
   selector: 'page-home',
@@ -12,15 +13,39 @@ import { File } from '@ionic-native/file';
 export class HomePage {
   counter = 0;
   showCounter = false;
-  timer = Observable.timer(5000);
-  subscription:any;
+  timer = Observable.timer(30000);
+  timerSubscription: any;
+  errorMessage = "";
+
 
   constructor (
     public navCtrl: NavController,
     private dialer: CallNumber,
-    private file: File
+    private file: File,
+    private modalCtrl: AlertController
   ) {
 
+  }
+
+  launchVerificationDialog() {
+    let prompt = this.modalCtrl.create({
+      title: 'Admin Access',
+      message: this.errorMessage,
+      inputs: [
+        {
+          name: 'code',
+          type: 'password',
+          placeholder: 'Enter the code to setup user'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Ok',
+          handler: this.authAndLaunchRsearchScreen.bind(this)
+        }
+      ]
+    });
+    prompt.present();
   }
 
   takeMeds() {
@@ -39,10 +64,20 @@ export class HomePage {
     }
   }
 
-  // write export
+  // writeexport
 
   checkFile(file) {
     return this.file.checkFile(this.file.dataDirectory, file);
+  }
+
+  authAndLaunchRsearchScreen(data) {
+    this.errorMessage = ''
+    let authenticResearcher = data.code == "CSC4000W";
+    if(authenticResearcher) {
+      this.navCtrl.push(ResearchPage)
+    } else {
+      this.errorMessage = "Incorrect verification code, please try again"
+    }
   }
 
   dialTwilioServer() {
@@ -52,9 +87,9 @@ export class HomePage {
   }
 
   revertShowCounter() {
-    if(this.subscription) { this.subscription.unsubscribe(); }
+    if(this.timerSubscription) { this.timerSubscription.unsubscribe(); }
     this.timer = Observable.timer(5000);
-    this.subscription = this.timer.subscribe(() => {
+    this.timerSubscription = this.timer.subscribe(() => {
       this.counter = 0;
       this.showCounter = false;
       console.log("reset")
