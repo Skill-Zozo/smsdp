@@ -12,9 +12,13 @@
 <ion-content>
   <ion-row>
     <ion-col col-10 offset-1>
-      <button ion-button round block (click)="dialTwilioServer()" color="danger">Lalela dokotela</button>
+      <button ion-button round block (click)="dialTwilioServer()"
+      color="danger" [disabled]="isDisabled">
+        Lalela dokotela
+      </button>
     </ion-col>
   </ion-row>
+  <ion-label color="dark" *ngIf="isDisabled"> USER NOT SET!!! </ion-label>
   <ion-note class="centered" *ngIf="showCounter">
     {{ counter }}
   </ion-note>
@@ -24,7 +28,7 @@
   <ion-toolbar color="dark">
     <ion-row>
       <ion-col col-10 offset-1>
-        <button ion-button round block (click)="takeMeds()" color="danger">
+        <button ion-button round block (click)="takeMeds()" color="danger" [disabled]="isDisabled">
           Press to take medication
         </button>
       </ion-col>

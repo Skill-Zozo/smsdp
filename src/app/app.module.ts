@@ -8,14 +8,15 @@ import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { ResearchPage } from '../pages/home/research';
-import { VerificationModal } from '../pages/home/verificationModal';
-import { SelectParticipantModal } from '../pages/home/participantsModal';
 
 import { CallNumber } from '@ionic-native/call-number';
 import { StatusBar } from '@ionic-native/status-bar';
 import { File } from '@ionic-native/file';
+import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { IonicStorageModule } from '@ionic/storage';
 
+import 'firebase/storage';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
@@ -36,13 +37,15 @@ export const firebaseConfig = {
     ContactPage,
     HomePage,
     TabsPage,
-    VerificationModal,
-    ResearchPage,
-    SelectParticipantModal
+    ResearchPage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot({
+      name: 'ionic-smsdp',
+      driverOrder: ['indexeddb', 'sqlite', 'websql']
+    }),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
     AngularFireAuthModule
@@ -54,15 +57,14 @@ export const firebaseConfig = {
     ContactPage,
     HomePage,
     TabsPage,
-    VerificationModal,
-    ResearchPage,
-    SelectParticipantModal
+    ResearchPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     CallNumber,
     File,
+    FileTransfer,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

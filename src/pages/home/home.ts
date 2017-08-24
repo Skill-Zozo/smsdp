@@ -4,6 +4,7 @@ import { CallNumber } from '@ionic-native/call-number';
 import { Observable } from 'rxjs/Rx';
 import { File } from '@ionic-native/file';
 import { ResearchPage } from './research';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'page-home',
@@ -16,15 +17,20 @@ export class HomePage {
   timer = Observable.timer(30000);
   timerSubscription: any;
   errorMessage = "";
-
+  isDisabled = true;
 
   constructor (
     public navCtrl: NavController,
     private dialer: CallNumber,
     private file: File,
-    private modalCtrl: AlertController
+    private modalCtrl: AlertController,
+    private storage: Storage
   ) {
-
+    let homepage = this;
+    this.storage.keys().then(function(keys) {
+      homepage.isDisabled = keys.indexOf("smsdp_name") == -1;
+      console.log('isDisabled: ', homepage.isDisabled);
+    })
   }
 
   launchVerificationDialog() {
@@ -57,17 +63,11 @@ export class HomePage {
   logActivity(counter) {
     var filename = '._smsdp_medication_logs.txt';
     var logEntry = new Date() + ": Medication taken " + counter + " times\n";
-    if(this.checkFile(filename)) {
-      this.file.writeExistingFile(this.file.dataDirectory, filename, logEntry);
-    } else {
-      this.file.writeFile(this.file.dataDirectory, filename, logEntry);
-    }
-  }
-
-  // writeexport
-
-  checkFile(file) {
-    return this.file.checkFile(this.file.dataDirectory, file);
+    let fullPath = this.file.dataDirectory + filename;
+    let file = this.file;
+    this.file.checkFile(this.file.dataDirectory, filename).then(function(fileExists){
+      file.writeFile(file.dataDirectory, filename, logEntry, {append: fileExists});
+    });
   }
 
   authAndLaunchRsearchScreen(data) {
@@ -88,8 +88,9 @@ export class HomePage {
 
   revertShowCounter() {
     if(this.timerSubscription) { this.timerSubscription.unsubscribe(); }
-    this.timer = Observable.timer(5000);
+    this.timer = Observable.timer(30000);
     this.timerSubscription = this.timer.subscribe(() => {
+      this.logActivity(this.counter);
       this.counter = 0;
       this.showCounter = false;
       console.log("reset")
