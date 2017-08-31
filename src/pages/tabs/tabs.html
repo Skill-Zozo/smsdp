@@ -1,5 +1,11 @@
-<ion-tabs>
-  <ion-tab [root]="listeningTab" [rootParams]="dosage" tabTitle="Dosage"></ion-tab>
-  <ion-tab [root]="listeningTab" [rootParams]="fullPrescription" tabTitle="Prescription"></ion-tab>
-  <ion-tab [root]="listeningTab" [rootParams]="sideEffects" tabTitle="Side Effects"></ion-tab>
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title style="text-align:center;">Imiyayelo yeyeza</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-tabs color="primary">
+  <ion-tab [root]="listeningTab" [rootParams]="dosage" tabTitle="Umlinganiselo"></ion-tab>
+  <ion-tab [root]="listeningTab" [rootParams]="fullPrescription" tabTitle="Utshintsho"></ion-tab>
+  <ion-tab [root]="listeningTab" [rootParams]="sideEffects" tabTitle="Imiphulela"></ion-tab>
 </ion-tabs>

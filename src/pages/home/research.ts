@@ -21,7 +21,7 @@ import { File } from '@ionic-native/file';
     <ion-content>
       <ion-list class="centered">
         <ion-item>
-          <button ion-button round color="danger" (click)="launchUserSelection()"> Set User </button>
+          <button ion-button round color="danger" (click)="launchUserSelection()" > Set User </button>
         </ion-item>
         <ion-item>
           <button ion-button round color="danger" (click)="exportUserLogs()" [disabled]='!userId'> Export Logs </button>
@@ -36,6 +36,7 @@ export class ResearchPage {
   isDisabled: any;
   userId;
   user: any;
+  fetchingUsers = true;
 
   constructor(
     private modalCtrl: AlertController,
@@ -48,10 +49,16 @@ export class ResearchPage {
     private loadingCtrl: LoadingController,
     private transfer: FileTransfer
   ) {
-    this.afdb.list('/users/audio')
-              .subscribe(users => this.users = users.filter(user => !user.assigned || user.name == 'test-user'));
-
     let researchPage = this;
+    let loadingModal = loadingCtrl.create({
+      content: 'Fetching users... Please make sure you have an active internet connection'
+    });
+    loadingModal.present();
+    this.afdb.list('/users/audio')
+              .subscribe((users) => {
+                researchPage.users = users.filter(user => !user.assigned || user.name == 'test-user');
+                loadingModal.dismiss();
+              });
     this.storage.keys().then(function(keys) {
       researchPage.isDisabled = keys.indexOf("smsdp_name") == -1;
       if(!researchPage.isDisabled) {
@@ -59,7 +66,8 @@ export class ResearchPage {
           researchPage.userId = userId;
         });
       }
-    })
+    });
+
   }
 
   launchUserSelection() {
@@ -90,6 +98,7 @@ export class ResearchPage {
 
     // download the necessary files
     this.user = this.users.filter(user => user.$key == data)[0];
+    localStorage.set('smsmdp_pill_name', this.user.prescription);
     let mediaURL = `prescription/audio/${this.user.prescription}`;
     let storageRef = firebase.storage().ref();
     let downloadSuccess = true;
@@ -98,7 +107,7 @@ export class ResearchPage {
       content: `Please wait, fetching ${currentlyDownloading} from firebase`
     });
     loadingModal.present();
-    ['full', 'dosage', 'sideeffects'].map(function(filename, i) {
+    ['full', 'dosage', 'sideeffects', 'changes'].map(function(filename, i) {
       currentlyDownloading = `${filename}.mp3`;
       let fullFilename = `${mediaURL}/${filename}.mp3`
       storageRef.child(fullFilename).getDownloadURL().then(function(url) {

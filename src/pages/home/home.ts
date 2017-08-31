@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Rx';
 import { File } from '@ionic-native/file';
 import { ResearchPage } from './research';
 import { Storage } from '@ionic/storage';
+import { TabsPage } from '../tabs/tabs';
 
 @Component({
   selector: 'page-home',
@@ -14,10 +15,11 @@ import { Storage } from '@ionic/storage';
 export class HomePage {
   counter = 0;
   showCounter = false;
-  timer = Observable.timer(30000);
+  timer = Observable.timer(1800000);
   timerSubscription: any;
   errorMessage = "";
   isDisabled = true;
+  pillName: any;
 
   constructor (
     public navCtrl: NavController,
@@ -30,7 +32,14 @@ export class HomePage {
     this.storage.keys().then(function(keys) {
       homepage.isDisabled = keys.indexOf("smsdp_name") == -1;
       console.log('isDisabled: ', homepage.isDisabled);
+    });
+    this.storage.get('smsmdp_pill_name').then(name => {
+      homepage.pillName = name;
     })
+  }
+
+  ionViewWillEnter() {
+    this.counter = 0;
   }
 
   launchVerificationDialog() {
@@ -80,6 +89,10 @@ export class HomePage {
     }
   }
 
+  launchPrescriptionTabs() {
+    this.navCtrl.push(TabsPage)
+  }
+
   dialTwilioServer() {
     this.dialer.callNumber('+27875517189', true)
       .then(() => console.log('call'))
@@ -88,7 +101,7 @@ export class HomePage {
 
   revertShowCounter() {
     if(this.timerSubscription) { this.timerSubscription.unsubscribe(); }
-    this.timer = Observable.timer(30000);
+    this.timer = Observable.timer(1800000);
     this.timerSubscription = this.timer.subscribe(() => {
       this.logActivity(this.counter);
       this.counter = 0;

@@ -8,6 +8,7 @@ import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { ResearchPage } from '../pages/home/research';
+import { ListenTab } from '../pages/tabs/listenTab';
 
 import { CallNumber } from '@ionic-native/call-number';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -37,11 +38,14 @@ export const firebaseConfig = {
     ContactPage,
     HomePage,
     TabsPage,
-    ResearchPage
+    ResearchPage,
+    ListenTab
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp,{
+      tabsPlacement: 'bottom'
+    }),
     IonicStorageModule.forRoot({
       name: 'ionic-smsdp',
       driverOrder: ['indexeddb', 'sqlite', 'websql']
@@ -57,7 +61,8 @@ export const firebaseConfig = {
     ContactPage,
     HomePage,
     TabsPage,
-    ResearchPage
+    ResearchPage,
+    ListenTab
   ],
   providers: [
     StatusBar,

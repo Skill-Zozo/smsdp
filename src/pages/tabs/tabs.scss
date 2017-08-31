@@ -1,0 +1,14 @@
+.waveform {
+       height: min-content;
+       width: 100%;
+       position: relative;
+       z-index: 100;
+}
+
+.plusHeight {
+  height: 100px;
+}
+
+.float-bottom {
+  bottom: 0;
+}

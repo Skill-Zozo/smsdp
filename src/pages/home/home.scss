@@ -10,6 +10,10 @@ ion-note {
   font-size: -webkit-xxx-large!important;
 }
 
+p {
+  text-transform: capitalize;
+  font-size: large;
+}
 .centered {
   position: fixed;
   top: 50%;
@@ -20,4 +24,16 @@ ion-note {
 .centered .ng-enter {
   -webkit-animation: swing 1s;
   animation: swing 1s;
+}
+
+.pill-image {
+  background-image: url('../assets/pill.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #fff;
+}
+
+.centrehorizontally {
+  left: 50%;
+  transform: translate(-50%);
 }
